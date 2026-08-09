@@ -24,17 +24,17 @@ jobs:
       with:
         context: .
         push: true
-        tags: ghcr.io/${{ github.repository_owner }}/test-cicd:latest
+        tags: ghcr.io/${{ github.repository_owner | toLower() }}/test-cicd:latest
 
     - name: 部署到云服务器
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USER }}
-        password: ${{ secrets.VPS_PASSWORD }}   # 如果你用的是SSH密钥方案，请改回 key: ${{ secrets.VPS_SSH_KEY }}
+        password: ${{ secrets.VPS_PASSWORD }}
         script: |
           docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-          docker pull ghcr.io/${{ github.repository_owner }}/test-cicd:latest
+          docker pull ghcr.io/${{ github.repository_owner | toLower() }}/test-cicd:latest
           docker stop test-cicd || true
           docker rm test-cicd || true
-          docker run -d --name test-cicd -p 3000:3000 ghcr.io/${{ github.repository_owner }}/test-cicd:latest
+          docker run -d --name test-cicd -p 3000:3000 ghcr.io/${{ github.repository_owner | toLower() }}/test-cicd:latest
