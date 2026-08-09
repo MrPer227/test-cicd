@@ -24,7 +24,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: ghcr.io/${{ github.repository_owner | toLower() }}/test-cicd:latest
+        tags: ghcr.io/${{ toLower(github.repository_owner) }}/test-cicd:latest
 
     - name: 部署到云服务器
       uses: appleboy/ssh-action@v1.0.3
@@ -34,7 +34,7 @@ jobs:
         password: ${{ secrets.VPS_PASSWORD }}
         script: |
           docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-          docker pull ghcr.io/${{ github.repository_owner | toLower() }}/test-cicd:latest
+          docker pull ghcr.io/${{ toLower(github.repository_owner) }}/test-cicd:latest
           docker stop test-cicd || true
           docker rm test-cicd || true
-          docker run -d --name test-cicd -p 3000:3000 ghcr.io/${{ github.repository_owner | toLower() }}/test-cicd:latest
+          docker run -d --name test-cicd -p 3000:3000 ghcr.io/${{ toLower(github.repository_owner) }}/test-cicd:latest
