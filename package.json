@@ -1,0 +1,12 @@
+{
+  "name": "test-cicd",
+  "version": "1.0.0",
+  "description": "CI/CD 测试项目",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
