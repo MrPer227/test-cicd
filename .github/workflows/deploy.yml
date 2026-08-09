@@ -37,8 +37,11 @@ jobs:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USER }}
         password: ${{ secrets.VPS_PASSWORD }}
+        command_timeout: 30m
         script: |
-          docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+          # 使用你的 GitHub 用户名和新的 PAT Secret 登录
+          docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GHCR_PAT }}
+          # 然后进行 pull 和 run
           docker pull ghcr.io/${{ env.OWNER_LOWER }}/test-cicd:latest
           docker stop test-cicd || true
           docker rm test-cicd || true
